@@ -96,7 +96,7 @@ config/      持仓、规则、白名单
 prompts/     LLM 系统提示词与用户模板
 src/ia/      market（数据） / features（指标） / rules（决策）
              llm（热点） / report（渲染） / notify（推送）
-ops/         launchd plist 与安装说明
+ops/         launchd 模板与安装说明
 tests/       纯函数单测
 data/        缓存、快照、报告（gitignore）
 logs/        运行日志（gitignore）
