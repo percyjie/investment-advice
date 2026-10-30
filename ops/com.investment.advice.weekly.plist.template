@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.panjie.ia.weekly</string>
+    <string>com.investment.advice.weekly</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/panjie/mycode/investment-advice/.venv/bin/ia</string>
+        <string>__PROJECT_DIR__/.venv/bin/ia</string>
         <string>weekly</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/panjie/mycode/investment-advice</string>
+    <string>__PROJECT_DIR__</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>TZ</key>
         <string>Asia/Shanghai</string>
         <key>IA_ENV_FILE</key>
-        <string>/Users/panjie/.config/ia/env</string>
+        <string>__ENV_FILE__</string>
         <key>PATH</key>
         <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     </dict>
@@ -32,8 +32,8 @@
     <key>RunAtLoad</key>
     <false/>
     <key>StandardOutPath</key>
-    <string>/Users/panjie/mycode/investment-advice/logs/weekly.out.log</string>
+    <string>__PROJECT_DIR__/logs/weekly.out.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/panjie/mycode/investment-advice/logs/weekly.err.log</string>
+    <string>__PROJECT_DIR__/logs/weekly.err.log</string>
 </dict>
 </plist>

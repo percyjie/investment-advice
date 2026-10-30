@@ -14,7 +14,7 @@
 ## 快速开始
 
 ```bash
-cd /Users/panjie/mycode/investment-advice
+cd investment-advice
 python3.13 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 
