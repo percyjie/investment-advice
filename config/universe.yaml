@@ -1,0 +1,18 @@
+# 可投标的白名单。default: true 表示该桶没有持仓时的默认加仓标的。
+# 不在白名单里的标的不会被建议买入；热点里出现的未持仓标的只标注「仅观察」。
+buckets:
+  equity_core:
+    - {code: "510300", name: 沪深300ETF, type: etf, default: true}
+    - {code: "510500", name: 中证500ETF, type: etf}
+    - {code: "159915", name: 创业板ETF, type: etf}
+    - {code: "588000", name: 科创50ETF, type: etf}
+  equity_satellite:
+    - {code: "512480", name: 半导体ETF, type: etf, default: true}
+    - {code: "512690", name: 酒ETF, type: etf}
+    - {code: "515030", name: 新能源车ETF, type: etf}
+    - {code: "512010", name: 医药ETF, type: etf}
+  gold:
+    - {code: "518880", name: 黄金ETF, type: etf, default: true}
+  bond:
+    - {code: "511010", name: 国债ETF, type: etf, default: true}
+  stock: []

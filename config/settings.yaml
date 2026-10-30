@@ -1,0 +1,34 @@
+timezone: Asia/Shanghai
+
+data_dir: data
+log_dir: logs
+
+portfolio_file: config/portfolio.yaml
+rules_file: config/rules.yaml
+universe_file: config/universe.yaml
+prompts_dir: prompts
+
+cache_ttl:            # 秒
+  quote: 600
+  bars: 21600
+  calendar: 2592000
+  news: 3600
+  valuation: 86400
+
+llm:
+  enabled: true
+  base_url: https://api.deepseek.com
+  model: deepseek-chat
+  timeout_connect: 5
+  timeout_read: 25
+  max_retries: 2
+  budget_seconds: 60
+  temperature: 0.2
+  max_topics: 5
+  min_confidence: 0.5
+
+notify:
+  feishu:
+    enabled: true
+  dingtalk:
+    enabled: true

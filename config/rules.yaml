@@ -1,0 +1,89 @@
+risk_profile: conservative
+
+# 中性状态下的目标权重（百分比，合计 100）
+targets:
+  equity_core: 20
+  equity_satellite: 5
+  stock: 5
+  gold: 20
+  bond: 20
+  cash: 30
+
+# 市场状态带来的战术偏离（百分点），叠加到中性目标上
+regime_shift:
+  risk_on:
+    equity_core: 3
+    equity_satellite: 2
+    stock: 0
+    gold: -3
+    bond: -1
+    cash: -1
+  risk_off:
+    equity_core: -5
+    equity_satellite: -3
+    stock: -1
+    gold: 5
+    bond: 4
+    cash: 0
+
+# 每个桶的硬上下限（百分比）
+bounds:
+  equity_core: [10, 35]
+  equity_satellite: [0, 15]
+  stock: [0, 10]
+  gold: [5, 30]
+  bond: [0, 40]
+  cash: [15, 45]
+
+# 沪深300 PE 十年分位门控
+valuation_gate:
+  expensive: 80
+  cheap: 20
+  expensive_factor: 0.85
+  cheap_factor: 1.10
+
+# 市场状态判定
+regime_thresholds:
+  risk_on_score: 3
+  risk_off_score: -3
+  vol_pct: 60          # 20日波动率低于近一年该分位 → +1
+  pe_pct: 70           # PE 十年分位低于该值 → +1
+  rate_chg_bp: 20      # 10Y 国债 60日上行超过该值（bp）→ -1
+  crash_chg_20d: -8    # 收盘低于 MA200 且 20日跌幅 ≤ 该值 → 强制 risk_off
+
+rebalance:
+  min_deviation: 0.03  # 桶偏离小于该比例不动
+  min_amount: 3000     # 单笔金额低于该值不动
+  max_turnover: 0.10   # 单周总成交额上限（占总资产）
+  cash_floor: 0.20     # 交易后现金比例下限
+
+caps:
+  stock: 0.05
+  etf: 0.25
+  fund: 0.15
+
+guards:
+  stop_loss_loss: -0.15      # 浮亏达到该值且跌破止损均线
+  stop_loss_ma: 120
+  no_chase_20d: 0.15         # 20日涨幅超过该值禁止买入
+  no_chase_ma: 20
+  no_chase_ma20: 0.10        # 偏离 MA20 超过该值禁止买入
+  fund_fee_lock_days: 7      # 场外基金持有不足该天数禁止卖出
+  valuation_hard_gate: 85    # PE 分位超过该值停止一切权益买入
+  stop_loss_exempt_buckets: [gold, bond]
+
+rounding:
+  stock: 100
+  etf: 100
+  fund: 100
+
+risk_scan:
+  equity_deviation: {warn: 0.05, critical: 0.10}
+  cash_ratio: {warn: 0.25, critical: 0.20}
+  single_stock: 0.05
+  loss_warn: -0.15
+  overheat_20d: 0.15
+  index_day_drop: {warn: -3.0, critical: -5.0}
+  pe_pct: 85
+  rate_chg_5d_bp: 20
+  board_exposure: 0.05
