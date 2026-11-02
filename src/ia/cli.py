@@ -259,15 +259,20 @@ def cmd_portfolio(args: argparse.Namespace) -> int:
     settings, rules, portfolio_cfg, universe = load_all()
     source = AkShareSource(settings)
     calendar = TradeCalendar(source)
+    from datetime import time as dt_time
+    from zoneinfo import ZoneInfo
+
     from ia.market.build import build_portfolio
 
-    portfolio, notes = build_portfolio(portfolio_cfg, source, calendar)
+    # 估值视图固定按盘前时点计算，避免盘中/盘后误报“数据偏旧”
+    now = datetime.combine(calendar.today(), dt_time(8, 30), tzinfo=ZoneInfo(settings.timezone))
+    portfolio, notes = build_portfolio(portfolio_cfg, source, calendar, now=now)
     print(f"总资产 {portfolio.total_assets:,.0f} 元｜现金 {portfolio.cash:,.0f} 元（{portfolio.cash_ratio * 100:.1f}%）")
-    print(f"{'代码':<8}{'名称':<14}{'桶':<8}{'市值':>12}{'占比':>8}{'浮盈':>8}")
+    print(f"{'代码':<8}{'名称':<20}{'桶':<8}{'市值':>10}{'占比':>8}{'浮盈':>8}")
     for pos in portfolio.positions:
         print(
-            f"{pos.code:<8}{pos.name:<14}{BUCKET_LABELS[pos.bucket]:<8}"
-            f"{pos.market_value:>12,.0f}{pos.weight * 100:>7.1f}%{pos.pnl_pct * 100:>7.1f}%"
+            f"{pos.code:<8}{pos.name:<20}{BUCKET_LABELS[pos.bucket]:<8}"
+            f"{pos.market_value:>10,.0f}{pos.weight * 100:>7.1f}%{pos.pnl_pct * 100:>7.1f}%"
         )
     print()
     for bucket, label in BUCKET_LABELS.items():

@@ -1,46 +1,20 @@
-# 示例持仓：等你提供真实数据后替换。meta.is_example 为 true 时报告会显著标注。
+# 真实持仓
 meta:
-  is_example: true
+  is_example: false
 
-cash: 100000
+cash: 2000
 
 holdings:
-  - code: "510300"
-    name: 沪深300ETF
-    type: etf
-    bucket: equity_core
-    qty: 10000
-    cost: 3.85
-    bought_at: 2025-06-12
-
-  - code: "512480"
-    name: 半导体ETF
-    type: etf
-    bucket: equity_satellite
-    qty: 8000
-    cost: 0.92
-    bought_at: 2025-09-01
-
-  - code: "600519"
-    name: 贵州茅台
+  - code: "601633"
+    name: 长城汽车
     type: stock
     bucket: stock
-    qty: 100
-    cost: 1500.0
-    bought_at: 2024-11-20
+    qty: 300
+    cost: 23.14
 
-  - code: "518880"
-    name: 黄金ETF
-    type: etf
-    bucket: gold
-    qty: 12000
-    cost: 5.10
-    bought_at: 2025-03-10
-
-  - code: "511010"
-    name: 国债ETF
-    type: etf
-    bucket: bond
-    qty: 500
-    cost: 110.5
-    bought_at: 2025-01-15
+  # 场外 QDII 指数基金，按当前市值录入；成本未提供，浮盈按 0 计
+  - code: "019305"
+    name: 摩根标普500指数(QDII)C
+    type: fund
+    bucket: equity_core
+    amount: 1200

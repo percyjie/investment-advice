@@ -173,3 +173,14 @@ def test_no_rebuy_after_stop_loss():
     assert any(t.reason is ReasonCode.STOP_LOSS for t in result.trades)
     assert not any(t.action.value == "BUY" and t.code == "600519" for t in result.trades)
     assert any(b.code == "600519" and b.reason is ReasonCode.STOP_LOSS for b in result.blocked)
+
+
+def test_small_account_uses_adaptive_min_amount_and_turnover_floor():
+    portfolio = make_portfolio([], cash=7400)
+    target = _target(gold=0.25, cash=0.75)
+    result = plan(portfolio, target, QUOTES, UNIVERSE, RULES, pe_pct=50.0)
+    buys = [t for t in result.trades if t.code == "518880"]
+    assert buys, "7,400 元的组合也应能买入黄金 ETF"
+    traded = sum(t.amount_est for t in result.trades)
+    assert traded <= RULES.rebalance.max_turnover_floor + 1e-6
+    assert not any(b.reason is ReasonCode.MIN_AMOUNT for b in result.blocked)

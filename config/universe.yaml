@@ -1,5 +1,5 @@
 # 可投标的白名单。default: true 表示该桶没有持仓时的默认加仓标的。
-# 不在白名单里的标的不会被建议买入；热点里出现的未持仓标的只标注「仅观察」。
+# stock 桶是自选观察池：用于热点关联与盯盘，不会自动建议买入未持有的个股。
 buckets:
   equity_core:
     - {code: "510300", name: 沪深300ETF, type: etf, default: true}
@@ -14,5 +14,52 @@ buckets:
   gold:
     - {code: "518880", name: 黄金ETF, type: etf, default: true}
   bond:
-    - {code: "511010", name: 国债ETF, type: etf, default: true}
-  stock: []
+    - {code: "000187", name: 华泰柏瑞丰盛纯债A, type: fund, default: true}
+    - {code: "511010", name: 国债ETF, type: etf}
+  stock:
+    - {code: "000651", name: 格力电器, type: stock}
+    - {code: "601012", name: 隆基绿能, type: stock}
+    - {code: "600660", name: 福耀玻璃, type: stock}
+    - {code: "300015", name: 爱尔眼科, type: stock}
+    - {code: "300750", name: 宁德时代, type: stock}
+    - {code: "600009", name: 上海机场, type: stock}
+    - {code: "000002", name: 万科A, type: stock}
+    - {code: "603986", name: 兆易创新, type: stock}
+    - {code: "600584", name: 长电科技, type: stock}
+    - {code: "600703", name: 三安光电, type: stock}
+    - {code: "600438", name: 通威股份, type: stock}
+    - {code: "002594", name: 比亚迪, type: stock}
+    - {code: "600031", name: 三一重工, type: stock}
+    - {code: "600036", name: 招商银行, type: stock}
+    - {code: "600916", name: 中国黄金, type: stock}
+    - {code: "600798", name: 宁波海运, type: stock}
+    - {code: "600893", name: 航发动力, type: stock}
+    - {code: "002475", name: 立讯精密, type: stock}
+    - {code: "600010", name: 包钢股份, type: stock}
+    - {code: "600030", name: 中信证券, type: stock}
+    - {code: "601633", name: 长城汽车, type: stock}
+    - {code: "600585", name: 海螺水泥, type: stock}
+    - {code: "002241", name: 歌尔股份, type: stock}
+    - {code: "601668", name: 中国建筑, type: stock}
+    - {code: "002352", name: 顺丰控股, type: stock}
+    - {code: "601933", name: 永辉超市, type: stock}
+    - {code: "000333", name: 美的集团, type: stock}
+    - {code: "000980", name: 众泰汽车, type: stock}
+    - {code: "600760", name: 中航沈飞, type: stock}
+    - {code: "601318", name: 中国平安, type: stock}
+    - {code: "600519", name: 贵州茅台, type: stock}
+    - {code: "688981", name: 中芯国际, type: stock}
+    - {code: "300099", name: 尤洛卡, type: stock}
+    - {code: "600196", name: 复星医药, type: stock}
+    - {code: "601728", name: 中国电信, type: stock}
+    - {code: "002941", name: 新疆交建, type: stock}
+    - {code: "600111", name: 北方稀土, type: stock}
+    - {code: "600905", name: 三峡能源, type: stock}
+    - {code: "601919", name: 中远海控, type: stock}
+    - {code: "300729", name: 乐歌股份, type: stock}
+    - {code: "002069", name: 獐子岛, type: stock}
+    - {code: "600053", name: "*ST九鼎", type: stock}
+    - {code: "601127", name: 赛力斯, type: stock}
+    - {code: "002050", name: 三花智控, type: stock}
+    - {code: "300207", name: 欣旺达, type: stock}
+    - {code: "688825", name: 长鑫科技, type: stock}

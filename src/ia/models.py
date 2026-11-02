@@ -65,11 +65,13 @@ class ReasonCode(StrEnum):
     REGIME_SHIFT = "REGIME_SHIFT"
     CASH_FLOOR = "CASH_FLOOR"
     SINGLE_CAP = "SINGLE_CAP"
+    NO_DEFAULT = "NO_DEFAULT"
     STOP_LOSS = "STOP_LOSS"
     NO_CHASE = "NO_CHASE"
     VALUATION_GATE = "VALUATION_GATE"
     TURNOVER_CAP = "TURNOVER_CAP"
     FUND_FEE_LOCK = "FUND_FEE_LOCK"
+    MIN_AMOUNT = "MIN_AMOUNT"
     ROUNDING = "ROUNDING"
     NOISE = "NOISE"
 
@@ -81,11 +83,13 @@ class ReasonCode(StrEnum):
             "REGIME_SHIFT": "市场状态变化",
             "CASH_FLOOR": "现金底线",
             "SINGLE_CAP": "单一标的超限",
+            "NO_DEFAULT": "无默认标的",
             "STOP_LOSS": "止损",
             "NO_CHASE": "短期过热",
             "VALUATION_GATE": "估值门控",
             "TURNOVER_CAP": "换手上限",
             "FUND_FEE_LOCK": "赎回费锁定",
+            "MIN_AMOUNT": "金额门槛",
             "ROUNDING": "整手限制",
             "NOISE": "偏离过小",
         }[self.value]
@@ -120,6 +124,7 @@ class Holding:
     qty: float
     cost: float
     bought_at: date | None = None
+    amount: float | None = None
 
 
 @dataclass(frozen=True)

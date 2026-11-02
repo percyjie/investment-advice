@@ -58,7 +58,16 @@ def build_portfolio(
         closes = _closes(bars)
         price = closes[-1]
         price_date = bars[-1].day
-        market_value = holding.qty * price
+        qty = holding.qty
+        if qty <= 0 and holding.amount:
+            qty = holding.amount / price
+        cost = holding.cost if holding.cost > 0 else price
+        cost_estimated = holding.cost <= 0
+        market_value = qty * price
+        if cost_estimated:
+            notes.append(f"{holding.name} 未提供成本价，浮盈按 0 计")
+        if holding.amount and holding.qty <= 0:
+            notes.append(f"{holding.name} 按市值 {holding.amount:,.0f} 元折算 {qty:,.2f} 份")
 
         if holding.type is AssetType.FUND:
             nav_date = price_date
@@ -74,6 +83,8 @@ def build_portfolio(
         raw.append(
             {
                 "holding": holding,
+                "qty": qty,
+                "cost": cost,
                 "price": price,
                 "price_date": price_date,
                 "market_value": market_value,
@@ -92,19 +103,21 @@ def build_portfolio(
         holding = item["holding"]
         closes = item["closes"]
         price = item["price"]
+        qty = item["qty"]
+        cost = item["cost"]
         positions.append(
             Position(
                 code=holding.code,
                 name=holding.name,
                 type=holding.type,
                 bucket=holding.bucket,
-                qty=holding.qty,
-                cost=holding.cost,
+                qty=qty,
+                cost=cost,
                 price=price,
                 price_date=item["price_date"],
                 market_value=item["market_value"],
                 weight=item["market_value"] / total,
-                pnl_pct=(price / holding.cost - 1) if holding.cost > 0 else 0.0,
+                pnl_pct=(price / cost - 1) if cost > 0 else 0.0,
                 ma20=sma(closes, 20),
                 ma120=sma(closes, 120),
                 chg_20d=change_over(closes, 20),

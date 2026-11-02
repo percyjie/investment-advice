@@ -81,6 +81,7 @@ class RebalanceSettings(BaseModel):
     min_deviation: float = 0.03
     min_amount: float = 3000
     max_turnover: float = 0.10
+    max_turnover_floor: float = 3000
     cash_floor: float = 0.20
 
 
@@ -237,10 +238,12 @@ def load_portfolio(path: Path) -> PortfolioConfig:
         bucket = str(item["bucket"])
         if bucket not in BUCKET_ORDER[:-1]:
             raise ValueError(f"{code} 的 bucket 非法: {bucket}")
-        qty = float(item.get("qty", 0))
-        cost = float(item.get("cost", 0))
-        if qty <= 0:
-            raise ValueError(f"{code} 的 qty 必须大于 0")
+        qty = float(item.get("qty") or 0)
+        cost = float(item.get("cost") or 0)
+        amount = item.get("amount")
+        amount = float(amount) if amount is not None else None
+        if qty <= 0 and (amount is None or amount <= 0):
+            raise ValueError(f"{code} 必须提供 qty 或 amount")
         if cost < 0:
             raise ValueError(f"{code} 的 cost 不能为负")
         holdings.append(
@@ -252,6 +255,7 @@ def load_portfolio(path: Path) -> PortfolioConfig:
                 qty=qty,
                 cost=cost,
                 bought_at=_parse_date(item.get("bought_at")),
+                amount=amount,
             )
         )
     is_example = bool((raw.get("meta") or {}).get("is_example", False))

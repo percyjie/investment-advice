@@ -49,6 +49,7 @@ def plan(
     cash = portfolio.cash
     as_of = portfolio.as_of
     cfg = rules.rebalance
+    min_amount = max(200.0, min(cfg.min_amount, total * 0.02))
 
     trades: list[Trade] = []
     blocked: list[BlockedTrade] = []
@@ -100,7 +101,7 @@ def plan(
         tgt_amt = target.get(bucket) * total
         delta = tgt_amt - cur
         dev = target.get(bucket) - (cur / total if total else 0)
-        if abs(delta) < cfg.min_amount or abs(dev) < cfg.min_deviation:
+        if abs(delta) < min_amount or abs(dev) < cfg.min_deviation:
             continue
         if delta >= 0:
             continue
@@ -120,7 +121,7 @@ def plan(
             share = need * (pos.market_value / bucket_cur) if bucket_cur else 0
             desired_sells.append((pos, share, f"{BUCKET_LABELS[bucket]}超配 {dev * 100:.1f}pp"))
 
-    cap_total = cfg.max_turnover * total
+    cap_total = max(cfg.max_turnover * total, cfg.max_turnover_floor)
     sell_total_desired = sum(amount for _, amount, _ in desired_sells)
     sell_scale = 1.0
     if sell_total_desired > cap_total and sell_total_desired > 0:
@@ -180,8 +181,13 @@ def plan(
         dev = target.get(bucket) - (cur / total if total else 0)
         if delta <= 0 or abs(dev) < cfg.min_deviation:
             continue
-        if delta < cfg.min_amount:
-            block("", BUCKET_LABELS[bucket], ReasonCode.NOISE, f"偏离 {dev * 100:.1f}pp，但差额不足 {cfg.min_amount:.0f} 元")
+        if delta < min_amount:
+            block(
+                "",
+                BUCKET_LABELS[bucket],
+                ReasonCode.MIN_AMOUNT,
+                f"偏离 {dev * 100:.1f}pp，差额 {delta:,.0f} 元低于门槛 {min_amount:,.0f} 元",
+            )
             continue
         buy_requests.append((delta, bucket))
 
@@ -217,7 +223,7 @@ def plan(
         else:
             default = next((item for item in universe.get(bucket, ()) if item.default), None)
             if default is None:
-                block("", BUCKET_LABELS[bucket], ReasonCode.SINGLE_CAP, f"{BUCKET_LABELS[bucket]}桶未配置默认加仓标的")
+                block("", BUCKET_LABELS[bucket], ReasonCode.NO_DEFAULT, f"{BUCKET_LABELS[bucket]}桶未配置默认加仓标的")
                 continue
             quote = quotes.get(default.code)
             if quote is None:

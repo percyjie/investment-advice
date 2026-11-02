@@ -53,14 +53,15 @@ regime_thresholds:
 
 rebalance:
   min_deviation: 0.03  # 桶偏离小于该比例不动
-  min_amount: 3000     # 单笔金额低于该值不动
+  min_amount: 3000     # 单笔金额上限门槛，实际取 min(该值, 总资产 2%)，不低于 200
   max_turnover: 0.10   # 单周总成交额上限（占总资产）
+  max_turnover_floor: 3000  # 小账户下限：换手额度不低于该值，否则买不起一手
   cash_floor: 0.20     # 交易后现金比例下限
 
 caps:
   stock: 0.05
   etf: 0.25
-  fund: 0.15
+  fund: 0.25
 
 guards:
   stop_loss_loss: -0.15      # 浮亏达到该值且跌破止损均线
